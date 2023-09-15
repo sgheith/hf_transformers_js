@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Zero Shot Classification - Hugging Face Transformers.js</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <div class="container-main">
+        <!-- Page Header -->
+        <div class="header">
+            <div class="header-logo">
+                <img src="images/logo.png" alt="logo">
+            </div>
+            <div class="header-main-text">
+                <h1>Hugging Face Transformers.js</h1>
+            </div>
+            <div class="header-sub-text">
+                <h3>Free AI Models for JavaScript Web Development</h3>
+            </div>
+        </div>
+        <hr> <!-- Separator -->
+
+        <!-- Back to Home button -->
+        <div class="row mt-5">
+            <div class="col-md-12 text-center">
+                <a href="index.html" class="btn btn-outline-secondary"
+                    style="color: #3c650b; border-color: #3c650b;">Back to Main Page</a>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="container mt-5">
+            <!-- Centered Titles -->
+            <div class="text-center">
+                <h2>Natural Language Processing</h2>
+                <h4>Zero Shot Classification</h4>
+            </div>
+
+            <!-- Actual Content of this page -->
+            <div id="zero-shot-classification-container" class="container mt-4">
+                <h5>Zero Shot Classification with Xenova/mobilebert-uncased-mnli:</h5>
+                <div class="d-flex align-items-center mb-2">
+                    <label for="textText" class="mb-0 text-nowrap" style="margin-right: 15px;">Enter Text:</label>
+                    <input type="text" class="form-control flex-grow-1" id="textText" value="Last week I upgraded my iOS version and ever since then my phone has been overheating whenever I use your app."
+                        placeholder="Enter text" style="margin-right: 15px; margin-left: 15px;">
+                </div>
+                <div class="d-flex align-items-center">
+                    <label for="labelsText" class="mb-0 text-nowrap" style="margin-right: 15px;">Enter Labels (comma separated):</label>
+                    <input type="text" class="form-control flex-grow-1" id="labelsText" value="mobile, billing, website, account access"
+                        placeholder="Enter labels (comma separated)" style="margin-right: 15px; margin-left: 15px;">
+                    <button id="classifyButton" class="btn btn-primary ml-2"
+                        onclick="classifyText()">Classify</button>
+                </div>
+                <div class="mt-4">
+                    <h4>Output:</h4>
+                    <pre id="outputArea"></pre>
+                </div>
+            </div>
+
+            <hr> <!-- Line Separator -->
+
+            <div id="zero-shot-classification-container-multi" class="container mt-4">
+                <h5>Zero Shot Classification with Xenova/nli-deberta-v3-xsmall (Multi-Label):</h5>
+                <div class="d-flex align-items-center mb-2">
+                    <label for="textTextMulti" class="mb-0 text-nowrap" style="margin-right: 15px;">Enter Text:</label>
+                    <input type="text" class="form-control flex-grow-1" id="textTextMulti" value="I have a problem with my iphone that needs to be resolved asap!"
+                        placeholder="Enter text" style="margin-right: 15px; margin-left: 15px;">
+                </div>
+                <div class="d-flex align-items-center">
+                    <label for="labelsTextMulti" class="mb-0 text-nowrap" style="margin-right: 15px;">Enter Labels (comma separated):</label>
+                    <input type="text" class="form-control flex-grow-1" id="labelsTextMulti" value="urgent, not urgent, phone, tablet, computer"
+                        placeholder="Enter labels (comma separated)" style="margin-right: 15px; margin-left: 15px;">
+                    <button id="classifyButtonMulti" class="btn btn-primary ml-2"
+                        onclick="classifyTextMulti()">Classify</button>
+                </div>
+                <div class="mt-4">
+                    <h4>Output:</h4>
+                    <pre id="outputAreaMulti"></pre>
+                </div>
+            </div>
+
+            <!-- Back to Home button -->
+            <div class="row mt-5">
+                <div class="col-md-12 text-center">
+                    <a href="index.html" class="btn btn-outline-secondary"
+                        style="color: #3c650b; border-color: #3c650b;">Back to Main Page</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // Initialize the sentiment analysis model
+        async function initializeModel() {
+
+        }
+
+        async function classifyText() {
+
+        }
+
+        async function classifyTextMulti() {
+
+        }
+
+        // Initialize the model after the DOM is completely loaded
+        window.addEventListener("DOMContentLoaded", initializeModel);
+    </script>
+</body>
+
+</html>

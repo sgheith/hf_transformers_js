@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Summarization - Hugging Face Transformers.js</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+    <div class="container-main">
+        <!-- Page Header -->
+        <div class="header">
+            <div class="header-logo">
+                <img src="images/logo.png" alt="logo">
+            </div>
+            <div class="header-main-text">
+                <h1>Hugging Face Transformers.js</h1>
+            </div>
+            <div class="header-sub-text">
+                <h3>Free AI Models for JavaScript Web Development</h3>
+            </div>
+        </div>
+        <hr> <!-- Separator -->
+
+        <!-- Back to Home button -->
+        <div class="row mt-5">
+            <div class="col-md-12 text-center">
+                <a href="index.html" class="btn btn-outline-secondary"
+                    style="color: #3c650b; border-color: #3c650b;">Back to Main Page</a>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="container mt-5">
+            <!-- Centered Titles -->
+            <div class="text-center">
+                <h2>Natural Language Processing</h2>
+                <h4>Summarization</h4>
+            </div>
+
+            <!-- Actual Content of this page -->
+            <div id="summarization-container" class="container mt-4">
+                <h5>Summarization with a Specific Model:</h5>
+                <div class="d-flex flex-column align-items-start">
+                    <label for="summarizationText" class="mb-0 text-nowrap" style="margin-right: 15px;">Enter Text to
+                        Summarize:</label>
+                    <textarea class="form-control flex-grow-1 mb-2" id="summarizationText" rows="6"
+                        style="margin-right: 15px; margin-left: 15px;">The tower is 324 metres (1,063 ft) tall, about the same height as an 81-storey building, and the tallest structure in Paris. Its base is square, measuring 125 metres (410 ft) on each side. During its construction, the Eiffel Tower surpassed the Washington Monument to become the tallest man-made structure in the world, a title it held for 41 years until the Chrysler Building in New York City was finished in 1930. It was the first structure to reach a height of 300 metres. Due to the addition of a broadcasting aerial at the top of the tower in 1957, it is now taller than the Chrysler Building by 5.2 metres (17 ft). Excluding transmitters, the Eiffel Tower is the second tallest free-standing structure in France after the Millau Viaduct.</textarea>
+
+                    <button id="summarizeButton" class="btn btn-primary" onclick="summarizeText()">Summarize</button>
+                </div>
+                <div class="mt-4">
+                    <h4>Output:</h4>
+                    <pre id="summarizationOutputArea"></pre>
+                </div>
+            </div>
+
+            <!-- Back to Home button -->
+            <div class="row mt-5">
+                <div class="col-md-12 text-center">
+                    <a href="index.html" class="btn btn-outline-secondary"
+                        style="color: #3c650b; border-color: #3c650b;">Back to Main Page</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // Initialize the sentiment analysis model
+        async function initializeModel() {
+
+        }
+
+        async function summarizeText() {
+
+
+        }
+
+        // Initialize the model after the DOM is completely loaded
+        window.addEventListener("DOMContentLoaded", initializeModel);
+    </script>
+</body>
+
+</html>

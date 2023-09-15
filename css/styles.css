@@ -1,1 +1,94 @@
+body {
+    background-color: lightgrey;
+}
 
+.container-main {
+    background-color: darkgrey;
+    padding: 20px;
+    margin: 25px auto;
+    width: 80%;
+    /* Changed from 90% to 80% */
+    border-radius: 10px;
+    /* Rounded Corners */
+    border: 2px solid #3c650b;
+    /* Add a border with a shade of blue */
+}
+
+hr {
+    border-top: 1px solid #3c650b;
+    /* Change the <hr> line color to a shade of blue */
+}
+
+.header-logo,
+.header-main-text,
+.header-sub-text {
+    text-align: center;
+}
+
+.header-main-text h1,
+.header-sub-text h3 {
+    color: #3c650b;
+    /* Green color */
+}
+
+h2 {
+    font-size: 1.4rem;
+    /* Makes the text smaller */
+    color: #3c650b;
+    /* Sets the text color to a shade of blue */
+}
+
+
+h4 {
+    font-size: 1.2rem;
+    /* Adjust font size */
+    color: #3c650b;
+    /* Set the text color to a shade of green */
+    margin-top: 10px;
+    /* Add some margin to separate from h2 */
+    font-weight: 400;
+    /* Adjust the font weight */
+}
+
+.card {
+    border: 2px solid #3c650b;
+    /* Change the border color to #3c650b */
+}
+
+.card-title {
+    color: #3c650b;
+    /* Change the title color to #3c650b */
+}
+
+.card-body {
+    text-align: center;
+    display: flex;
+    /* Added flexbox layout */
+    flex-direction: column;
+    /* Direction */
+    justify-content: center;
+    /* Vertical centering */
+}
+
+.row {
+    margin-bottom: 15px;
+    /* Margin between rows */
+}
+
+.col-md-3 {
+    padding: 5px;
+    /* Margin between cards */
+}
+
+.card-custom-height {
+    height: 75px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-body {
+    padding: 10px;
+    /* Reduced padding to make more cards visible */
+    text-align: center;
+}
