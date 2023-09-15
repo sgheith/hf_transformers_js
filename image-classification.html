@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <title>Image Classification - Hugging Face Transformers.js</title>
 
+    <script type="module">
+        // Import the library
+        import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.4';
+
+        // Make it available globally
+        window.pipeline = pipeline;
+    </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
@@ -106,21 +114,45 @@
 
     <script>
 
+        let classifier;
+
         // Initialize the sentiment analysis model
         async function initializeModel() {
+            classifier = await pipeline('image-classification', 'Xenova/vit-base-patch16-224');
 
         }
 
         async function classifyImage() {
+            const textFieldValue = document.getElementById("imageClassificationURLText").value.trim();
 
+            const result = await classifier(textFieldValue);
+
+            document.getElementById("outputArea").innerText = JSON.stringify(result, null, 2);
         }
 
         async function classifyImageLocal() {
+            const fileInput = document.getElementById("imageClassificationLocalFile");
+            const file = fileInput.files[0];
 
+            if (!file) {
+                alert('Please select an image file first.');
+                return;
+            }
+
+            // Create a Blob URL from the file
+            const url = URL.createObjectURL(file);
+
+            const result = await classifier(url);
+
+            document.getElementById("outputAreaLocal").innerText = JSON.stringify(result, null, 2);
         }
 
         async function classifyTopImage() {
+            const textFieldValue = document.getElementById("imageClassificationTopURLText").value.trim();
 
+            const result = await classifier(textFieldValue, { topk: 3 });
+
+            document.getElementById("outputAreaTop").innerText = JSON.stringify(result, null, 2);
         }
 
         // Initialize the model after the DOM is completely loaded

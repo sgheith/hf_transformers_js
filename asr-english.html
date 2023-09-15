@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <title>Automatic Speech Recognition - Hugging Face Transformers.js</title>
 
+    <script type="module">
+        // Import the library
+        import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.4';
+
+        // Make it available globally
+        window.pipeline = pipeline;
+    </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <link rel="stylesheet" href="css/styles.css">
@@ -148,30 +156,62 @@
 
     <script>
 
+        let transcriber;
+
         // Initialize the sentiment analysis model
         async function initializeModel() {
+            transcriber = await pipeline('automatic-speech-recognition', 'Xenova/whisper-tiny.en');
 
         }
 
         async function transcribeEnglish() {
+            const textFieldValue = document.getElementById("transcribeEnglishURLText").value.trim();
 
+            let result = await transcriber(textFieldValue);
+
+            document.getElementById("outputArea").innerText = JSON.stringify(result, null, 2);
         }
 
         async function transcribeEnglishLocal() {
+            const fileInput = document.getElementById("transcribeEnglishLocalFile");
+            const file = fileInput.files[0];
 
+            if (!file) {
+                alert('Please select an audio file first.');
+                return;
+            }
+
+            // Create a Blob URL from the file
+            const url = URL.createObjectURL(file);
+
+            let result = await transcriber(url);
+
+            document.getElementById("outputAreaLocal").innerText = JSON.stringify(result, null, 2);
         }
 
         async function transcribeEnglishTimestamps() {
+            const textFieldValue = document.getElementById("transcribeEnglishTimestampsURLText").value.trim();
 
+            let result = await transcriber(textFieldValue, { return_timestamps: true });
+
+            document.getElementById("outputAreaTimestamps").innerText = JSON.stringify(result, null, 2);
         }
 
         async function transcribeEnglishWordlevelTimestamps() {
+            const textFieldValue = document.getElementById("transcribeEnglishWordlevelTimestampsURLText").value.trim();
 
+            let result = await transcriber(textFieldValue, { return_timestamps: 'word' });
+
+            document.getElementById("outputAreaWordlevelTimestamps").innerText = JSON.stringify(result, null, 2);
         }
 
 
         async function transcribeEnglish30() {
+            const textFieldValue = document.getElementById("transcribeEnglish30URLText").value.trim();
 
+            let result = await transcriber(textFieldValue, { chunk_length_s: 30, stride_length_s: 5 });
+
+            document.getElementById("outputArea30").innerText = JSON.stringify(result, null, 2);
         }
 
         // Initialize the model after the DOM is completely loaded

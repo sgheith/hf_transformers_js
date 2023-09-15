@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <title>Text-to-text Generation - Hugging Face Transformers.js</title>
 
+    <script type="module">
+        // Import the library
+        import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.4';
+
+        // Make it available globally
+        window.pipeline = pipeline;
+    </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
@@ -90,17 +98,38 @@
 
     <script>
 
+        let generator;
+
         // Initialize the sentiment analysis model
         async function initializeModel() {
+            generator = await pipeline('text2text-generation', 'Xenova/LaMini-Flan-T5-783M');
 
         }
 
         async function generateText() {
+            const textFieldValue = document.getElementById("text-to-textGenerationText").value.trim();
 
+            const result = await generator(textFieldValue, {
+                max_new_tokens: 100,
+            });
+
+            document.getElementById("outputArea").innerText = JSON.stringify(result, null, 2);
         }
 
         async function generateText2() {
+            const textFieldValue = document.getElementById("text-to-textGenerationText2").value.trim();
 
+            const result = await generator(textFieldValue, {
+                max_new_tokens: 200,
+                temperature: 0.9,
+                repetition_penalty: 2.0,
+                no_repeat_ngram_size: 3,
+
+                // top_k: 20,
+                // do_sample: true,
+            });
+
+            document.getElementById("outputArea2").innerText = JSON.stringify(result, null, 2);
         }
 
         // Initialize the model after the DOM is completely loaded

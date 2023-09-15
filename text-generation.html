@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <title>Text Generation - Hugging Face Transformers.js</title>
 
+    <script type="module">
+        // Import the library
+        import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.4';
+
+        // Make it available globally
+        window.pipeline = pipeline;
+    </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
@@ -107,21 +115,45 @@
 
     <script>
 
+        let generator;
+        let code_generator;
+
         // Initialize the sentiment analysis model
         async function initializeModel() {
+            generator = await pipeline('text-generation', 'Xenova/distilgpt2');
+            code_generator = await pipeline('text-generation', 'Xenova/codegen-350M-mono');
 
         }
 
         async function generateText() {
+            const textFieldValue = document.getElementById("generationText").value.trim();
 
+            const result = await generator(textFieldValue);
+
+            document.getElementById("outputArea").innerText = JSON.stringify(result, null, 2);
         }
 
         async function generateText2() {
+            const textFieldValue = document.getElementById("generationText2").value.trim();
 
+            const result = await generator(textFieldValue, {
+                temperature: 2,
+                max_new_tokens: 20,
+                repetition_penalty: 1.5,
+                no_repeat_ngram_size: 2,
+                num_beams: 2,
+                num_return_sequences: 3,
+            });
+
+            document.getElementById("outputArea2").innerText = JSON.stringify(result, null, 2);
         }
         
         async function generateCode() {
+            const textFieldValue = document.getElementById("generationCode").value.trim();
 
+            const result = await code_generator(textFieldValue);
+
+            document.getElementById("outputAreaCode").innerText = JSON.stringify(result, null, 2);
         }
 
         // Initialize the model after the DOM is completely loaded

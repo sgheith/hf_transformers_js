@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <title>Translation - Hugging Face Transformers.js</title>
 
+    <script type="module">
+        // Import the library
+        import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.4';
+
+        // Make it available globally
+        window.pipeline = pipeline;
+    </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
@@ -88,17 +96,36 @@
 
     <script>
 
+        let translator;
+        let translator2;
+
         // Initialize the sentiment analysis model
         async function initializeModel() {
+            translator = await pipeline('translation', 'Xenova/nllb-200-distilled-600M');
+            translator2 = await pipeline('translation', 'Xenova/m2m100_418M');
 
         }
 
         async function translateText() {
+            const textFieldValue = document.getElementById("translationText").value.trim();
 
+            let result = await translator(textFieldValue, {
+                src_lang: 'hin_Deva', // Hindi
+                tgt_lang: 'fra_Latn', // French
+            });
+
+            document.getElementById("outputArea").innerText = JSON.stringify(result, null, 2);
         }
 
         async function translateText2() {
+            const textFieldValue = document.getElementById("translationText2").value.trim();
 
+            let result = await translator2(textFieldValue, {
+                src_lang: 'zh', // Chinese
+                tgt_lang: 'en', // English
+            })
+
+            document.getElementById("outputArea2").innerText = JSON.stringify(result, null, 2);
         }
 
         // Initialize the model after the DOM is completely loaded

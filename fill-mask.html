@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <title>Fill Mask - Hugging Face Transformers.js</title>
 
+    <script type="module">
+        // Import the library
+        import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.4';
+
+        // Make it available globally
+        window.pipeline = pipeline;
+    </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
@@ -87,17 +95,29 @@
 
     <script>
 
+        let unmaskeruncased;
+        let unmaskerncased;
+
         // Initialize the sentiment analysis model
         async function initializeModel() {
-
+            unmaskeruncased = await pipeline('fill-mask', 'Xenova/bert-base-uncased');
+            unmaskerncased = await pipeline('fill-mask', 'Xenova/bert-base-cased');
         }
 
         async function fillMask() {
+            const textFieldValue = document.getElementById("fillMaskText").value.trim();
 
+            const result = await unmaskeruncased(textFieldValue);
+
+            document.getElementById("outputArea").innerText = JSON.stringify(result, null, 2);
         }
 
         async function fillMaskTopResult() {
+            const textFieldValue = document.getElementById("fillMaskText2").value.trim();
 
+            const result = await unmaskerncased(textFieldValue, { topk: 1 });
+
+            document.getElementById("outputArea2").innerText = JSON.stringify(result, null, 2);
         }
 
         // Initialize the model after the DOM is completely loaded

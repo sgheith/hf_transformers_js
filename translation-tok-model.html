@@ -5,6 +5,15 @@
     <meta charset="UTF-8">
     <title>Translation (Tokenizer & Model) - Hugging Face Transformers.js</title>
 
+    <script type="module">
+        // Import the library
+        import { AutoTokenizer, AutoModelForSeq2SeqLM } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.4';
+
+        // Make them available globally
+        window.AutoTokenizer = AutoTokenizer;
+        window.AutoModelForSeq2SeqLM = AutoModelForSeq2SeqLM;
+    </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
@@ -71,13 +80,31 @@
 
     <script>
 
+        let tokenizer;
+        let model;
+
         // Initialize the sentiment analysis model
         async function initializeModel() {
+            tokenizer = await AutoTokenizer.from_pretrained('Xenova/t5-small');
+            model = await AutoModelForSeq2SeqLM.from_pretrained('Xenova/t5-small');
 
         }
 
         async function translateText() {
 
+            const textFieldValue = document.getElementById("translationText").value.trim();
+            let { input_ids } = await tokenizer(textFieldValue);
+
+            console.log("input_ids: " + input_ids);
+
+            let outputs = await model.generate(input_ids);
+
+            let decoded = tokenizer.decode(outputs[0], { skip_special_tokens: true });
+
+            console.log("outputs: " + outputs);
+            console.log("decoded: " + decoded);
+
+            document.getElementById("outputArea").innerText = JSON.stringify(decoded, null, 2);
         }
 
         // Initialize the model after the DOM is completely loaded

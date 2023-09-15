@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <title>Object Detection - Hugging Face Transformers.js</title>
 
+    <script type="module">
+        // Import the library
+        import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.4';
+
+        // Make it available globally
+        window.pipeline = pipeline;
+    </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
@@ -88,17 +96,37 @@
 
     <script>
 
+        let detector;
+
         // Initialize the sentiment analysis model
         async function initializeModel() {
+            detector = await pipeline('object-detection', 'Xenova/detr-resnet-50');
 
         }
 
         async function detectImage() {
+            const textFieldValue = document.getElementById("objectDetectionURLText").value.trim();
 
+            const result = await detector(textFieldValue, { threshold: 0.9 });
+
+            document.getElementById("outputArea").innerText = JSON.stringify(result, null, 2);
         }
 
         async function detectImageLocal() {
+            const fileInput = document.getElementById("objectDetectionLocalFile");
+            const file = fileInput.files[0];
 
+            if (!file) {
+                alert('Please select an image file first.');
+                return;
+            }
+
+            // Create a Blob URL from the file
+            const url = URL.createObjectURL(file);
+
+            const result = await detector(url, { threshold: 0.9 });
+
+            document.getElementById("outputAreaLocal").innerText = JSON.stringify(result, null, 2);
         }
 
         // Initialize the model after the DOM is completely loaded

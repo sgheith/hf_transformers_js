@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <title>Zero Shot Image Classification - Hugging Face Transformers.js</title>
 
+    <script type="module">
+        // Import the library
+        import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.4';
+
+        // Make it available globally
+        window.pipeline = pipeline;
+    </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
@@ -102,17 +110,39 @@
 
     <script>
 
+        let classifier;
+
         // Initialize the sentiment analysis model
         async function initializeModel() {
+            classifier = await pipeline('zero-shot-image-classification', 'Xenova/clip-vit-base-patch32');
 
         }
 
         async function classifyImage() {
+            const textFieldValue = document.getElementById("zeroShotImageClassificationURLText").value.trim();
+            const labels = document.getElementById("labelsText").value.trim().split(",").map(item => item.trim());
 
+            const result = await classifier(textFieldValue, labels);
+
+            document.getElementById("outputArea").innerText = JSON.stringify(result, null, 2);
         }
 
         async function classifyLocalImage() {
+            const fileInput = document.getElementById("imageClassificationLocalFile");
+            const file = fileInput.files[0];
 
+            if (!file) {
+                alert('Please select an image file first.');
+                return;
+            }
+
+            // Create a Blob URL from the file
+            const url = URL.createObjectURL(file);
+            const labels = document.getElementById("labelsLocalText").value.trim().split(",").map(item => item.trim());
+
+            const result = await classifier(url, labels);
+
+            document.getElementById("outputAreaLocal").innerText = JSON.stringify(result, null, 2);
         }
 
         // Initialize the model after the DOM is completely loaded

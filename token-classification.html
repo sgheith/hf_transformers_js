@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <title>Token Classification - Hugging Face Transformers.js</title>
 
+    <script type="module">
+        // Import the library
+        import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.4';
+
+        // Make it available globally
+        window.pipeline = pipeline;
+    </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
@@ -87,17 +95,28 @@
 
     <script>
 
+        let classifier;
+
         // Initialize the sentiment analysis model
         async function initializeModel() {
+            classifier = await pipeline('token-classification', 'Xenova/bert-base-NER');
 
         }
 
         async function analyzeText() {
+            const textFieldValue = document.getElementById("tokenClassificationText").value.trim();
 
+            const result = await classifier(textFieldValue);
+
+            document.getElementById("outputArea").innerText = JSON.stringify(result, null, 2);
         }
 
         async function analyzeText2() {
+            const textFieldValue = document.getElementById("tokenClassificationText2").value.trim();
 
+            const result = await classifier(textFieldValue, { ignore_labels: [] });
+
+            document.getElementById("outputArea2").innerText = JSON.stringify(result, null, 2);
         }
 
         // Initialize the model after the DOM is completely loaded

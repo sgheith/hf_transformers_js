@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <title>Automatic Speech Recognition - Hugging Face Transformers.js</title>
 
+    <script type="module">
+        // Import the library
+        import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.4';
+
+        // Make it available globally
+        window.pipeline = pipeline;
+    </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
@@ -106,21 +114,45 @@
 
     <script>
 
+        let transcriber;
+
         // Initialize the sentiment analysis model
         async function initializeModel() {
+            transcriber = await pipeline('automatic-speech-recognition', 'Xenova/whisper-small');
 
         }
 
         async function transcribeNonEnglish() {
+            const textFieldValue = document.getElementById("transcribeNonEnglishURLText").value.trim();
 
+            let result = await transcriber(textFieldValue, { language: 'french', task: 'transcribe' })
+
+            document.getElementById("outputArea").innerText = JSON.stringify(result, null, 2);
         }
 
         async function transcribeNonEnglishLocal() {
+            const fileInput = document.getElementById("transcribeNonEnglishLocalFile");
+            const file = fileInput.files[0];
 
+            if (!file) {
+                alert('Please select an audio file first.');
+                return;
+            }
+
+            // Create a Blob URL from the file
+            const url = URL.createObjectURL(file);
+
+            let result = await transcriber(url, { language: 'french', task: 'transcribe' })
+
+            document.getElementById("outputAreaLocal").innerText = JSON.stringify(result, null, 2);
         }
 
         async function transcribeToEnglish() {
+            const textFieldValue = document.getElementById("transcribeToEnglishURLText").value.trim();
 
+            let result = await transcriber(textFieldValue, { language: 'french', task: 'translate' })
+
+            document.getElementById("outputAreaToEnglish").innerText = JSON.stringify(result, null, 2);
         }
         
         // Initialize the model after the DOM is completely loaded

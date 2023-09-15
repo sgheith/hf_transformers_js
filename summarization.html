@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <title>Summarization - Hugging Face Transformers.js</title>
 
+    <script type="module">
+        // Import the library
+        import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.4';
+
+        // Make it available globally
+        window.pipeline = pipeline;
+    </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
@@ -71,14 +79,39 @@
 
     <script>
 
+        let generator;
+
         // Initialize the sentiment analysis model
         async function initializeModel() {
-
+            generator = await pipeline('summarization', 'Xenova/distilbart-cnn-6-6');
         }
 
         async function summarizeText() {
 
+            // Reference to the textarea and the button
+            const textArea = document.getElementById("summarizationText");
+            const summarizeButton = document.getElementById("summarizeButton");
 
+            const textAreaValue = textArea.value.trim();
+
+            document.getElementById("summarizationOutputArea").innerText = ""
+
+            // Disable textarea and button, and set cursor to hourglass
+            textArea.disabled = true;
+            summarizeButton.disabled = true;
+            document.body.style.cursor = "wait";
+
+            // Ensure the DOM updates before making the API call
+            setTimeout(async () => {
+                let summary = await generator(textAreaValue, { max_new_tokens: 100 });
+
+                document.getElementById("summarizationOutputArea").innerText = JSON.stringify(summary, null, 2);
+
+                // Re-enable textarea and button, and reset cursor
+                textArea.disabled = false;
+                summarizeButton.disabled = false;
+                document.body.style.cursor = "default";
+            }, 10);
         }
 
         // Initialize the model after the DOM is completely loaded

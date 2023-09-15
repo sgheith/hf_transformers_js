@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <title>Question Answering - Hugging Face Transformers.js</title>
 
+    <script type="module">
+        // Import the library
+        import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.4';
+
+        // Make it available globally
+        window.pipeline = pipeline;
+    </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
@@ -97,17 +105,30 @@
 
     <script>
 
+        let answerer;
+
         // Initialize the sentiment analysis model
         async function initializeModel() {
+            answerer = await pipeline('question-answering', 'Xenova/distilbert-base-uncased-distilled-squad');
 
         }
 
         async function answerQuestion() {
+            const question = document.getElementById("questionText").value.trim();
+            const context = document.getElementById("contextText").value.trim();
 
+            const result = await answerer(question, context);
+
+            document.getElementById("outputArea").innerText = JSON.stringify(result, null, 2);
         }
 
         async function answerQuestionTop() {
+            const question = document.getElementById("questionTopText").value.trim();
+            const context = document.getElementById("contextTopText").value.trim();
 
+            const result = await answerer(question, context, { topk: 3 });
+
+            document.getElementById("outputTopArea").innerText = JSON.stringify(result, null, 2);
         }
 
         // Initialize the model after the DOM is completely loaded

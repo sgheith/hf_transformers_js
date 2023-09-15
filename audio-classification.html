@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <title>Audio Classification - Hugging Face Transformers.js</title>
 
+    <script type="module">
+        // Import the library
+        import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.4';
+
+        // Make it available globally
+        window.pipeline = pipeline;
+    </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
@@ -89,17 +97,37 @@
 
     <script>
 
+        let classifier;
+
         // Initialize the sentiment analysis model
         async function initializeModel() {
+            classifier = await pipeline('audio-classification', 'Xenova/wav2vec2-large-xlsr-53-gender-recognition-librispeech');
 
         }
 
         async function audioClassification() {
+            const textFieldValue = document.getElementById("audioClassificationURLText").value.trim();
 
+            let result = await classifier(textFieldValue);
+
+            document.getElementById("outputArea").innerText = JSON.stringify(result, null, 2);
         }
 
         async function audioClassificationLocal() {
+            const fileInput = document.getElementById("audioClassificationLocalFile");
+            const file = fileInput.files[0];
 
+            if (!file) {
+                alert('Please select an audio file first.');
+                return;
+            }
+
+            // Create a Blob URL from the file
+            const url = URL.createObjectURL(file);
+
+            let result = await classifier(url);
+
+            document.getElementById("outputAreaLocal").innerText = JSON.stringify(result, null, 2);
         }
 
         // Initialize the model after the DOM is completely loaded

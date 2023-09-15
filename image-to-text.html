@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <title>Image to Text - Hugging Face Transformers.js</title>
 
+    <script type="module">
+        // Import the library
+        import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.4';
+
+        // Make it available globally
+        window.pipeline = pipeline;
+    </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css"></head>
@@ -86,17 +94,37 @@
 
     <script>
 
+        let captioner;
+
         // Initialize the sentiment analysis model
         async function initializeModel() {
+            captioner = await pipeline('image-to-text', 'Xenova/vit-gpt2-image-captioning');
 
         }
 
         async function captionImage() {
+            const textFieldValue = document.getElementById("imageToTextURLText").value.trim();
 
+            const result = await captioner(textFieldValue);
+
+            document.getElementById("outputArea").innerText = JSON.stringify(result, null, 2);
         }
 
         async function captionImageLocal() {
+            const fileInput = document.getElementById("imagetoTextLocalFile");
+            const file = fileInput.files[0];
 
+            if (!file) {
+                alert('Please select an image file first.');
+                return;
+            }
+
+            // Create a Blob URL from the file
+            const url = URL.createObjectURL(file);
+
+            const result = await captioner(url);
+
+            document.getElementById("outputAreaLocal").innerText = JSON.stringify(result, null, 2);
         }
 
         // Initialize the model after the DOM is completely loaded

@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <title>Sentiment Analysis - Hugging Face Transformers.js</title>
 
+    <script type="module">
+        // Import the library
+        import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.5.4';
+
+        // Make it available globally
+        window.pipeline = pipeline;
+    </script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
@@ -150,25 +158,61 @@
 
     <script>
 
+        let sentimentAnalysis;
+        let reviewer;
+        let toxic_classifier;
 
         // Initialize the sentiment analysis model
         async function initializeModel() {
-
+            sentimentAnalysis = await pipeline("sentiment-analysis");
+            reviewer = await pipeline('sentiment-analysis', 'Xenova/bert-base-multilingual-uncased-sentiment');
+            toxic_classifier = await pipeline('text-classification', 'Xenova/toxic-bert');
         }
 
         async function analyzeSentiment() {
+            const textFieldValue = document.getElementById("sentimentText").value.trim();
+
+            const result = await sentimentAnalysis(textFieldValue);
+
+            document.getElementById("outputArea").innerText = JSON.stringify(result, null, 2);
         }
 
         async function analyzeSentimentMulti() {
+            const textFieldValue1 = document.getElementById("sentimentText1").value.trim();
+            const textFieldValue2 = document.getElementById("sentimentText2").value.trim();
+
+            const result = await sentimentAnalysis([textFieldValue1, textFieldValue2]);
+
+            document.getElementById("outputArea2").innerText = JSON.stringify(result, null, 2);
         }
 
         async function analyzeReview() {
+
+            const textFieldValue = document.getElementById("reviewText").value.trim();
+
+            const result = await reviewer(textFieldValue);
+
+            document.getElementById("reviewOutputArea").innerText = JSON.stringify(result, null, 2);
+
         }
 
         async function analyzeReview2() {
+
+            const textFieldValue = document.getElementById("reviewText2").value.trim();
+
+            const result = await reviewer(textFieldValue, { topk: 5 });
+
+            document.getElementById("reviewOutputArea2").innerText = JSON.stringify(result, null, 2);
+
         }
 
         async function toxicReview() {
+
+            const textFieldValue = document.getElementById("toxicText").value.trim();
+
+            const result = await toxic_classifier(textFieldValue, { topk: null });
+
+            document.getElementById("toxicOutputArea").innerText = JSON.stringify(result, null, 2);
 
         }
 
